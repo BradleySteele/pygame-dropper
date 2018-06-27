@@ -6,8 +6,6 @@ from sprite import TextSprite, Sprite, BarSprite
 
 pygame.init()
 
-clock = pygame.time.Clock()
-
 colour_black = pygame.Color('black')
 colour_white = pygame.Color('white')
 colour_green = (14, 201, 39)
@@ -18,6 +16,9 @@ colour_red = (178, 7, 7)
 
 def render_text(screen, text, position, size=30, center=True):
     """
+    Renders text and wraps in the TextSprite sprite, binding it
+    to the provided screen with optional size and centering.
+
     :param screen:   screen that we're drawing on.
     :param text:     text to display.
     :param position: tuple of x and y position.
@@ -35,23 +36,68 @@ def render_text(screen, text, position, size=30, center=True):
 
 
 def render_rect(screen, identifier, colour, position):
+    """
+    Renders a rectangle and wraps into a Sprite, binding it
+    to the provided screen.
+
+    :param screen:     screen that we're drawing on.
+    :param identifier: id for the sprite.
+    :param colour:     colour of the rect.
+    :param position:   position of the rect.
+    :return: wrapped sprite for the rect.
+    """
+
     rect = pygame.draw.rect(screen.surface, colour, position)
     return apply_sprite(screen, Sprite(identifier, rect))
 
 
 def render_bar(screen, identifier, colour, length, gap):
+    """
+    Renders a bar and wraps into a BarSprite, binding it to
+    the provided screen.
+
+    :param screen:     screen that we're drawing on.
+    :param identifier: id for the sprite.
+    :param colour:     colour of the rect.
+    :param length:     length of the first bar.
+    :param gap:        size of the gap between both bars.
+    :return: wrapped sprite for the bar.
+    """
+
     part1 = pygame.draw.rect(screen.surface, colour, (0, 50, length, 25))
     part2 = pygame.draw.rect(screen.surface, colour, ((length + gap + 50), 50, ((screen.width - length) - gap), 25))
     return apply_sprite(screen, BarSprite(identifier, part1, part2))
 
 
 def move_rect_from_id(screen, identifier, position, draw_colour, replace_colour):
+    """
+    Moves all sprites with the provided identifier and draws over
+    the previous, if no sprites exist in the screen with the id,
+    then the screen will not be affected.
+
+    :param screen:         screen that we're drawing on.
+    :param identifier:     id of the sprite to move.
+    :param position:       new position of the sprite.
+    :param draw_colour:    colour of the rect.
+    :param replace_colour: colour to replace previous position.
+    """
+
     for sprite in screen.sprites:
         if sprite.identifier == identifier:
             move_rect(screen.surface, sprite.rect, position, draw_colour, replace_colour)
 
 
 def move_rect(surface, rect, position, draw_colour, replace_colour):
+    """
+    Moves a rectangle and draws over the previous.
+
+    :param surface:        surface that we're drawing on.
+    :param rect:           rect to move.
+    :param position:       new position of the sprite.
+    :param draw_colour:    colour of the rect.
+    :param replace_colour: colour to replace previous position.
+    """
+
     pygame.draw.rect(surface, replace_colour, rect)
     rect.x = position[0]
     rect.y = position[1]
@@ -59,6 +105,16 @@ def move_rect(surface, rect, position, draw_colour, replace_colour):
 
 
 def move_bar(surface, sprite, y, draw_colour, replace_colour):
+    """
+    Moves a bar and draws over the previous.
+
+    :param surface:        surface that we're drawing on.
+    :param sprite:         sprite to move.
+    :param y:              y axis to move, relative.
+    :param draw_colour:    colour of the rect.
+    :param replace_colour: colour to replace previous position.
+    """
+
     move_rect(surface, sprite.part1, (sprite.part1.x, sprite.part1.y + y), draw_colour, replace_colour)
     move_rect(surface, sprite.part2, (sprite.part2.x, sprite.part2.y + y), draw_colour, replace_colour)
 
