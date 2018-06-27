@@ -41,7 +41,7 @@ def render_rect(screen, identifier, colour, position):
 
 def render_bar(screen, identifier, colour, length, gap):
     part1 = pygame.draw.rect(screen.surface, colour, (0, 50, length, 25))
-    part2 = pygame.draw.rect(screen.surface, colour, ((length + gap + 50), 50, ((450 - length) - gap), 25))
+    part2 = pygame.draw.rect(screen.surface, colour, ((length + gap + 50), 50, ((screen.width - length) - gap), 25))
     return apply_sprite(screen, BarSprite(identifier, part1, part2))
 
 
