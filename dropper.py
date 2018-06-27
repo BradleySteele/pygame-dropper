@@ -6,8 +6,8 @@ import util
 
 class Game:
     # Settings
-    setting_width = 500
-    setting_height = 500
+    setting_width = 1000
+    setting_height = 850
 
     # Screens
     active_screen = None
@@ -18,6 +18,7 @@ class Game:
     running = False
     score = 0
     iteration = 0
+    difficulty = 10
 
     def __init__(self):
         self.active_screen = self.menu_screen
@@ -44,7 +45,7 @@ def handle_events(game):
             game.active_screen.show(game)
             pygame.display.update()
 
-        pygame.time.wait(10)
+        pygame.time.wait(game.difficulty)
 
 
 if __name__ == '__main__':
