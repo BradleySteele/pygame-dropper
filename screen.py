@@ -18,18 +18,34 @@ class Screen:
     sprites = []
 
     def __init__(self, width, height, title):
+        """
+        :param width:  width of the screen.
+        :param height: height of the screen.
+        :param title:  title of the screen.
+        """
+
         self.width = width
         self.height = height
         self.title = title
         self.surface = pygame.display.set_mode((width, height))
 
     def show(self, game):
+        """
+        Shows the screen and sets the caption.
+
+        :param game: the game to show.
+        """
+
         if not self.running:
             pygame.display.set_caption(self.title)
             self.running = True
             self.run(game)
 
     def hide(self):
+        """
+        Clears the active screen and its sprites.
+        """
+
         self.running = False
         self.sprites = []
         self.surface.fill(util.colour_black)
