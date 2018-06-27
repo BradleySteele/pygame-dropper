@@ -111,6 +111,10 @@ class GameScreen(Screen):
         game.iteration += 1
 
         if game.iteration >= 100:
+            if game.score != 0 and game.score % 5 == 0 and game.difficulty > 3:
+                game.difficulty -= 1
+                print("New Difficulty: " + str(game.difficulty))
+
             game.iteration = 0
             gap = (100 - (game.score * 4))
 
@@ -125,6 +129,7 @@ class GameScreen(Screen):
     def run(self, game):
         game.score = 0
         game.iteration = 0
+        game.difficulty = 10
 
         self.surface.fill(util.colour_cyan)
         self.player_y = self.height - 70
