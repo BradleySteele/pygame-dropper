@@ -5,9 +5,9 @@ class Sprite:
         self.rect = rect
 
 
-class TextSprite:
+class TextSprite(Sprite):
     text = None
 
     def __init__(self, rect, text):
-        super(TextSprite, self).__init__(self, rect)
+        super(TextSprite, self).__init__(rect)
         self.text = text
