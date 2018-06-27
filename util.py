@@ -2,7 +2,7 @@ import sys
 import pygame
 
 # Initialise all imported pygame modules
-from sprite import TextSprite, Sprite
+from sprite import TextSprite, Sprite, BarSprite
 
 pygame.init()
 
@@ -39,17 +39,28 @@ def render_rect(screen, identifier, colour, position):
     return apply_sprite(screen, Sprite(identifier, rect))
 
 
+def render_bar(screen, identifier, colour, length, gap):
+    part1 = pygame.draw.rect(screen.surface, colour, (0, 0, length, 25))
+    part2 = pygame.draw.rect(screen.surface, colour, ((length + gap + 50), 0, ((450 - length) - gap), 25))
+    return apply_sprite(screen, BarSprite(identifier, part1, part2))
+
+
 def move_rect_from_id(screen, identifier, position, draw_colour, replace_colour):
     for sprite in screen.sprites:
         if sprite.identifier == identifier:
-            move_rect(screen.surface, sprite, position, draw_colour, replace_colour)
+            move_rect(screen.surface, sprite.rect, position, draw_colour, replace_colour)
 
 
-def move_rect(surface, sprite, position, draw_colour, replace_colour):
-    pygame.draw.rect(surface, replace_colour, sprite.rect)
-    sprite.rect.x = position[0]
-    sprite.rect.y = position[1]
-    pygame.draw.rect(surface, draw_colour, sprite.rect)
+def move_rect(surface, rect, position, draw_colour, replace_colour):
+    pygame.draw.rect(surface, replace_colour, rect)
+    rect.x = position[0]
+    rect.y = position[1]
+    pygame.draw.rect(surface, draw_colour, rect)
+
+
+def move_bar(surface, sprite, y, draw_colour, replace_colour):
+    move_rect(surface, sprite.part1, (sprite.part1.x, sprite.part1.y + y), draw_colour, replace_colour)
+    move_rect(surface, sprite.part2, (sprite.part2.x, sprite.part2.y + y), draw_colour, replace_colour)
 
 
 def apply_sprite(screen, sprite):
