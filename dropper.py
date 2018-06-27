@@ -13,10 +13,12 @@ class Game:
     active_screen = None
     menu_screen = screen.MenuScreen(setting_width, setting_height)
     game_screen = screen.GameScreen(setting_width, setting_height)
+    end_game_screen = screen.EndGameScreen(setting_width, setting_height)
 
     # Attributes
     running = False
     score = 0
+    high_score = 0
     iteration = 0
     difficulty = 10
 

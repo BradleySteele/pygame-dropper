@@ -11,6 +11,7 @@ from sprite import TextSprite
 class Screen:
     width = 0
     height = 0
+    title = None
     running = False
 
     surface = None
@@ -19,12 +20,12 @@ class Screen:
     def __init__(self, width, height, title):
         self.width = width
         self.height = height
+        self.title = title
         self.surface = pygame.display.set_mode((width, height))
-
-        pygame.display.set_caption(title)
 
     def show(self, game):
         if not self.running:
+            pygame.display.set_caption(self.title)
             self.running = True
             self.run(game)
 
@@ -75,6 +76,30 @@ class MenuScreen(Screen):
                 util.exit_program()
 
 
+class EndGameScreen(Screen):
+
+    def __init__(self, width, height):
+        super(EndGameScreen, self).__init__(width, height, title='Dropper | End Game')
+
+    def show(self, game):
+        if game.score > game.high_score:
+            game.high_score = game.score
+
+        super().show(game)
+
+    def run(self, game):
+        util.render_text(self, locale.END_GAME_TITLE, (200, 100), 50)
+        util.render_text(self, locale.END_GAME_SCORE.format(game.score), (200, 200), 25)
+        util.render_text(self, locale.END_GAME_HIGH_SCORE.format(game.high_score), (200, 230), 25)
+        util.render_text(self, locale.END_GAME_RETURN_TO_MENU.format(game.high_score), (200, 300))
+
+    def clicked(self, game, sprite):
+        if sprite.text == locale.END_GAME_RETURN_TO_MENU:
+            game.active_screen.hide()
+            game.active_screen = game.menu_screen
+            game.active_screen.show(game)
+
+
 class GameScreen(Screen):
     sprite_score = None
     sprite_dirt = None
@@ -95,8 +120,7 @@ class GameScreen(Screen):
             if sprite.identifier == locale.ID_DROPPING_OBJECT:
                 if sprite.part1.colliderect(self.sprite_player.rect) or sprite.part2.colliderect(self.sprite_player.rect):
                     game.active_screen.hide()
-                    # TODO game over screen
-                    game.active_screen = game.menu_screen
+                    game.active_screen = game.end_game_screen
                     game.active_screen.show(game)
                     return
                 elif sprite.rect.y >= self.bar_hit_y:
@@ -113,7 +137,6 @@ class GameScreen(Screen):
         if game.iteration >= 100:
             if game.score != 0 and game.score % 5 == 0 and game.difficulty > 3:
                 game.difficulty -= 1
-                print("New Difficulty: " + str(game.difficulty))
 
             game.iteration = 0
             gap = (100 - (game.score * 4))
