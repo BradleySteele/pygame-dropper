@@ -19,7 +19,7 @@ def render_text(screen, text, position, size=30, center=True):
     :param position: tuple of x and y position.
     :param size:     font size.
     :param center:   should the text be horizontally centered.
-    :return: sprite wrapper for the font.
+    :return: sprite wrapper for the string text.
     """
 
     font = pygame.font.Font('data/fonts/arial.ttf', size)
