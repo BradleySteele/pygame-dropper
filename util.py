@@ -16,6 +16,7 @@ def render_text(screen, text, position, size=30, center=True):
     :param position: tuple of x and y position.
     :param size:     font size.
     :param center:   should the text be horizontally centered.
+    :return: the rect containing the text.
     """
 
     font = pygame.font.Font('data/fonts/arial.ttf', size)
@@ -23,3 +24,9 @@ def render_text(screen, text, position, size=30, center=True):
     text_rect = text.get_rect(center=(screen.width / 2, position[1]) if center else position)
 
     screen.surface.blit(text, text_rect)
+    return apply_sprite(screen, text_rect)
+
+
+def apply_sprite(screen, rect):
+    screen.sprites.append(rect)
+    return rect
