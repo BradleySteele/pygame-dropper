@@ -40,7 +40,7 @@ class Screen:
         pass
 
     @abstractmethod
-    def clicked(self, game, position):
+    def clicked(self, game, sprite):
         """
         Invoked when a pygame.MOUSEBUTTONUP event is handled with
         this as the active screen.
@@ -63,18 +63,14 @@ class MenuScreen(Screen):
         util.render_text(self, "Play", (200, 200))
         util.render_text(self, "Quit", (200, 250))
 
-        # pygame.draw.rect(self.surface, (255, 0, 0), (0, 0, 50, 30))
-
-    def clicked(self, game, position):
-        for sprite in self.sprites:
-            if sprite.rect.collidepoint(position):
-                if type(sprite) == TextSprite:
-                    if sprite.text == 'Play':
-                        game.active_screen.hide()
-                        game.active_screen = game.game_screen
-                        game.active_screen.show()
-                    elif sprite.text == 'Quit':
-                        util.exit_program()
+    def clicked(self, game, sprite):
+        if type(sprite) == TextSprite:
+            if sprite.text == 'Play':
+                game.active_screen.hide()
+                game.active_screen = game.game_screen
+                game.active_screen.show()
+            elif sprite.text == 'Quit':
+                util.exit_program()
 
 
 class GameScreen(Screen):
@@ -83,7 +79,7 @@ class GameScreen(Screen):
         super(GameScreen, self).__init__(width, height, title='Dropper | Game')
 
     def run(self):
-        pass
+        pygame.draw.rect(self.surface, (255, 0, 0), (0, 0, 50, 30))
 
     def clicked(self, game, position):
         pass
