@@ -2,7 +2,6 @@ from abc import abstractmethod
 
 import pygame
 
-import dropper
 import util
 from sprite import TextSprite
 
@@ -10,8 +9,9 @@ from sprite import TextSprite
 class Screen:
     width = 0
     height = 0
-    surface = None
     running = False
+
+    surface = None
     sprites = []
 
     def __init__(self, width, height, title):
@@ -30,6 +30,7 @@ class Screen:
         self.running = False
         self.surface.fill(util.colour_white)
 
+    @abstractmethod
     def run(self):
         """
         Called when show() is invoked and the screen is not already
@@ -38,6 +39,7 @@ class Screen:
 
         pass
 
+    @abstractmethod
     def clicked(self, game, position):
         """
         Invoked when a pygame.MOUSEBUTTONUP event is handled with
@@ -65,17 +67,23 @@ class MenuScreen(Screen):
 
     def clicked(self, game, position):
         for sprite in self.sprites:
-            if sprite.collidepoint(position):
+            if sprite.rect.collidepoint(position):
                 if type(sprite) == TextSprite:
                     if sprite.text == 'Play':
                         game.active_screen.hide()
                         game.active_screen = game.game_screen
                         game.active_screen.show()
                     elif sprite.text == 'Quit':
-                        dropper.stop()
+                        util.exit_program()
 
 
 class GameScreen(Screen):
 
     def __init__(self, width, height):
         super(GameScreen, self).__init__(width, height, title='Dropper | Game')
+
+    def run(self):
+        pass
+
+    def clicked(self, game, position):
+        pass
