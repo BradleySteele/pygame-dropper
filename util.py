@@ -31,11 +31,23 @@ def render_text(screen, text, position, size=30, center=True):
 
 
 def apply_sprite(screen, sprite):
+    """
+    Applies a sprite to the provided screen.
+
+    :param screen: screen to apply the sprite to.
+    :param sprite: sprite to apply.
+    :return: the applied sprite.
+    """
+
     screen.sprites.append(sprite)
     return sprite
 
 
 def exit_program():
+    """
+    Quits pygame and exists the program.
+    """
+
     print("Stopping dropper game. Good bye!")
 
     pygame.quit()
