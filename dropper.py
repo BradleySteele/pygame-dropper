@@ -44,7 +44,7 @@ def handle_events(game):
             game.active_screen.show(game)
             pygame.display.update()
 
-        pygame.time.wait(20)
+        pygame.time.wait(10)
 
 
 if __name__ == '__main__':
