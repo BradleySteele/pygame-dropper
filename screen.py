@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from random import randint
 
 import pygame
 
@@ -93,11 +94,20 @@ class GameScreen(Screen):
                     # TODO game over screen
                     game.active_screen = game.menu_screen
                     game.active_screen.show(game)
-                elif sprite.rect.y == 425:
+                elif sprite.rect.y >= 425:
                     self.sprites.remove(sprite)
-                    pygame.draw.rect(self.surface, util.colour_cyan, sprite.rect)
+                    pygame.draw.rect(self.surface, util.colour_cyan, sprite.part1)
+                    pygame.draw.rect(self.surface, util.colour_cyan, sprite.part2)
+
+                    game.score += 1
                 else:
-                    util.move_rect(self.surface, sprite, (sprite.rect.x, sprite.rect.y + 5), util.colour_red, util.colour_cyan)
+                    util.move_bar(self.surface, sprite, 5, util.colour_red, util.colour_cyan)
+
+        game.iteration += 1
+
+        if game.iteration >= 50:
+            game.iteration = 0
+            util.render_bar(self, locale.ID_DROPPING_OBJECT, util.colour_red, randint(0, 400), (100 - game.score))
 
     def run(self, game):
         self.surface.fill(util.colour_cyan)
@@ -105,7 +115,5 @@ class GameScreen(Screen):
         self.sprite_grass = util.render_rect(self, locale.ID_GRASS, util.colour_green, (0, 455, 500, 10))
         self.sprite_player = util.render_rect(self, locale.ID_PLAYER, util.colour_black, (230, 430, 40, 25))
 
-        util.render_rect(self, locale.ID_DROPPING_OBJECT, util.colour_red, (250, 0, 40, 25))
-
     def clicked(self, game, sprite):
-        print("Clicked: " + sprite.identifier)
+        pass
