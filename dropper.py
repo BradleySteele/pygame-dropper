@@ -16,8 +16,8 @@ class Game:
 
     # Attributes
     running = False
-    level = 0
-    wave = 1
+    score = 0
+    iteration = 0
 
     def __init__(self):
         self.active_screen = self.menu_screen
