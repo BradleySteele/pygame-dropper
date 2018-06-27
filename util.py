@@ -13,6 +13,7 @@ colour_white = pygame.Color('white')
 colour_green = (14, 201, 39)
 colour_brown = (99, 50, 4)
 colour_cyan = (11, 216, 239)
+colour_red = (178, 7, 7)
 
 
 def render_text(screen, text, position, size=30, center=True):
@@ -38,12 +39,17 @@ def render_rect(screen, identifier, colour, position):
     return apply_sprite(screen, Sprite(identifier, rect))
 
 
-def move_rect(screen, identifier, position, draw_colour, replace_colour):
+def move_rect_from_id(screen, identifier, position, draw_colour, replace_colour):
     for sprite in screen.sprites:
         if sprite.identifier == identifier:
-            pygame.draw.rect(screen.surface, replace_colour, sprite.rect)
-            sprite.rect.center = position
-            pygame.draw.rect(screen.surface, draw_colour, sprite.rect)
+            move_rect(screen.surface, sprite, position, draw_colour, replace_colour)
+
+
+def move_rect(surface, sprite, position, draw_colour, replace_colour):
+    pygame.draw.rect(surface, replace_colour, sprite.rect)
+    sprite.rect.x = position[0]
+    sprite.rect.y = position[1]
+    pygame.draw.rect(surface, draw_colour, sprite.rect)
 
 
 def apply_sprite(screen, sprite):
