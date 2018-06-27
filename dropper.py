@@ -25,7 +25,7 @@ class Game:
 
 def start(game):
     game.running = True
-    game.active_screen.show()
+    game.active_screen.show(game)
 
     handle_events(game)
 
@@ -41,7 +41,7 @@ def handle_events(game):
                         game.active_screen.clicked(game, sprite)
 
         if game.active_screen.running:
-            game.active_screen.show()
+            game.active_screen.show(game)
             pygame.display.update()
 
         pygame.time.wait(20)
