@@ -29,7 +29,8 @@ class Screen:
 
     def hide(self):
         self.running = False
-        self.surface.fill(util.colour_white)
+        self.sprites = []
+        self.surface.fill(util.colour_black)
 
     @abstractmethod
     def run(self):
@@ -59,7 +60,6 @@ class MenuScreen(Screen):
         super(MenuScreen, self).__init__(width, height, title='Dropper | Menu')
 
     def run(self):
-        self.surface.fill(util.colour_black)
         util.render_text(self, locale.MENU_TITLE, (200, 100), 50)
         util.render_text(self, locale.MENU_PLAY, (200, 200))
         util.render_text(self, locale.MENU_QUIT, (200, 250))
@@ -79,8 +79,15 @@ class GameScreen(Screen):
     def __init__(self, width, height):
         super(GameScreen, self).__init__(width, height, title='Dropper | Game')
 
-    def run(self):
-        pygame.draw.rect(self.surface, (255, 0, 0), (0, 0, 50, 30))
+    def show(self):
+        super().show()
+        util.move_rect(self, "player", (pygame.mouse.get_pos()[0], 442), util.colour_black, util.colour_cyan)
 
-    def clicked(self, game, position):
-        pass
+    def run(self):
+        self.surface.fill(util.colour_cyan)
+        util.render_rect(self, "dirt", util.colour_brown, (0, 465, 500, 35))
+        util.render_rect(self, "grass", util.colour_green, (0, 455, 500, 10))
+        util.render_rect(self, "player", util.colour_black, (230, 430, 40, 25))
+
+    def clicked(self, game, sprite):
+        print("Clicked: " + sprite.identifier)
