@@ -7,6 +7,16 @@ class Sprite:
         self.rect = rect
 
 
+class BarSprite(Sprite):
+    part1 = None
+    part2 = None
+
+    def __init__(self, identifier, part1, part2):
+        super(BarSprite, self).__init__(identifier, part1)
+        self.part1 = part1
+        self.part2 = part2
+
+
 class TextSprite(Sprite):
     text = None
 
