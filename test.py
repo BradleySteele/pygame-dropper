@@ -38,7 +38,7 @@ def handle_events(game):
                 game.active_screen.clicked(game, pygame.mouse.get_pos())
 
         if game.active_screen.running:
-            game.active_screen.run()
+            game.active_screen.show()
             pygame.display.update()
 
 

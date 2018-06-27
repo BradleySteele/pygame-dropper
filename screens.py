@@ -8,6 +8,7 @@ class Screen:
     height = 0
     surface = None
     running = False
+    sprites = []
 
     def __init__(self, width, height, title):
         self.width = width
@@ -17,7 +18,9 @@ class Screen:
         pygame.display.set_caption(title)
 
     def show(self):
-        self.running = True
+        if not self.running:
+            self.running = True
+            self.run()
 
     def hide(self):
         self.running = False
