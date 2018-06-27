@@ -1,7 +1,7 @@
-import sys
 import pygame
 
 import screens
+import util
 
 
 class Game:
@@ -28,18 +28,11 @@ def start(game):
     handle_events(game)
 
 
-def stop():
-    print("Stopping dropper game. Good bye!")
-
-    pygame.quit()
-    sys.exit()
-
-
 def handle_events(game):
     while game.running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                stop()
+                util.exit_program()
             elif event.type == pygame.MOUSEBUTTONUP:
                 game.active_screen.clicked(game, pygame.mouse.get_pos())
 

@@ -1,6 +1,9 @@
+import sys
 import pygame
 
 # Initialise all imported pygame modules
+from sprite import TextSprite
+
 pygame.init()
 
 clock = pygame.time.Clock()
@@ -20,13 +23,20 @@ def render_text(screen, text, position, size=30, center=True):
     """
 
     font = pygame.font.Font('data/fonts/arial.ttf', size)
-    text = font.render(text, True, colour_white, position)
-    text_rect = text.get_rect(center=(screen.width / 2, position[1]) if center else position)
+    render = font.render(text, True, colour_white, position)
+    render_rect = render.get_rect(center=(screen.width / 2, position[1]) if center else position)
 
-    screen.surface.blit(text, text_rect)
-    return apply_sprite(screen, text_rect)
+    screen.surface.blit(render, render_rect)
+    return apply_sprite(screen, TextSprite(render_rect, text))
 
 
 def apply_sprite(screen, sprite):
     screen.sprites.append(sprite)
     return sprite
+
+
+def exit_program():
+    print("Stopping dropper game. Good bye!")
+
+    pygame.quit()
+    sys.exit()
