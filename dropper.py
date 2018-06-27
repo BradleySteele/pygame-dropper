@@ -35,7 +35,7 @@ def handle_events(game):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 util.exit_program()
-            elif event.type == pygame.MOUSEBUTTONUP:
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 for sprite in game.active_screen.sprites:
                     if sprite.rect.collidepoint(pygame.mouse.get_pos()):
                         game.active_screen.clicked(game, sprite)
