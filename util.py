@@ -1,9 +1,9 @@
 import sys
 import pygame
 
-# Initialise all imported pygame modules
 from sprite import TextSprite, Sprite, BarSprite
 
+# Initialise all imported pygame modules
 pygame.init()
 
 colour_black = pygame.Color('black')
