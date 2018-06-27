@@ -1,6 +1,6 @@
 import pygame
 
-import screens
+import screen
 import util
 
 
@@ -11,8 +11,8 @@ class Game:
 
     # Screens
     active_screen = None
-    menu_screen = screens.MenuScreen(setting_width, setting_height)
-    game_screen = screens.GameScreen(setting_width, setting_height)
+    menu_screen = screen.MenuScreen(setting_width, setting_height)
+    game_screen = screen.GameScreen(setting_width, setting_height)
 
     # Attributes
     running = False
