@@ -46,7 +46,7 @@ class Screen:
         this as the active screen.
 
         :param game:     the game that the screen is bound to.
-        :param position: the position of the click provided by the event.
+        :param sprite:   the position of the click provided by the event.
         """
 
         pass
