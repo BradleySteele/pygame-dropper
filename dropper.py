@@ -27,6 +27,12 @@ class Game:
 
 
 def start(game):
+    """
+    Initialises the provided game, should only be called once.
+
+    :param game: the game to start.
+    """
+
     game.running = True
     game.active_screen.show(game)
 
@@ -34,7 +40,13 @@ def start(game):
 
 
 def handle_events(game):
-    while game.running:
+    """
+    Handles all pygame events while the game is running.
+
+    :param game: the game to handle events for.
+    """
+
+    while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 util.exit_program()
