@@ -76,44 +76,63 @@ class MenuScreen(Screen):
 
 
 class GameScreen(Screen):
+    sprite_score = None
     sprite_dirt = None
     sprite_grass = None
     sprite_player = None
+
+    player_y = 0
+    bar_hit_y = 0
 
     def __init__(self, width, height):
         super(GameScreen, self).__init__(width, height, title='Dropper | Game')
 
     def show(self, game):
         super().show(game)
-        util.move_rect_from_id(self, locale.ID_PLAYER, (pygame.mouse.get_pos()[0], 430), util.colour_black, util.colour_cyan)
+        util.move_rect_from_id(self, locale.ID_PLAYER, (pygame.mouse.get_pos()[0], self.player_y), util.colour_black, util.colour_cyan)
 
         for sprite in self.sprites:
             if sprite.identifier == locale.ID_DROPPING_OBJECT:
-                if sprite.rect.colliderect(self.sprite_player.rect):
+                if sprite.part1.colliderect(self.sprite_player.rect) or sprite.part2.colliderect(self.sprite_player.rect):
                     game.active_screen.hide()
                     # TODO game over screen
                     game.active_screen = game.menu_screen
                     game.active_screen.show(game)
-                elif sprite.rect.y >= 425:
+                    return
+                elif sprite.rect.y >= self.bar_hit_y:
                     self.sprites.remove(sprite)
                     pygame.draw.rect(self.surface, util.colour_cyan, sprite.part1)
                     pygame.draw.rect(self.surface, util.colour_cyan, sprite.part2)
 
                     game.score += 1
                 else:
-                    util.move_bar(self.surface, sprite, 5, util.colour_red, util.colour_cyan)
+                    util.move_bar(self.surface, sprite, 2, util.colour_red, util.colour_cyan)
 
         game.iteration += 1
 
-        if game.iteration >= 50:
+        if game.iteration >= 100:
             game.iteration = 0
-            util.render_bar(self, locale.ID_DROPPING_OBJECT, util.colour_red, randint(0, 400), (100 - game.score))
+            gap = (100 - (game.score * 4))
+
+            if gap < 5:
+                gap = 5
+
+            util.render_bar(self, locale.ID_DROPPING_OBJECT, util.colour_red, randint(0, (self.width - 100)), gap)
+
+        pygame.draw.rect(self.surface, util.colour_cyan, self.sprite_score.rect)
+        self.sprite_score = util.render_text(self, locale.GAME_SCORE.format(game.score), (70, 20), center=False)
 
     def run(self, game):
+        game.score = 0
+        game.iteration = 0
+
         self.surface.fill(util.colour_cyan)
-        self.sprite_dirt = util.render_rect(self, locale.ID_DIRT, util.colour_brown, (0, 465, 500, 35))
-        self.sprite_grass = util.render_rect(self, locale.ID_GRASS, util.colour_green, (0, 455, 500, 10))
-        self.sprite_player = util.render_rect(self, locale.ID_PLAYER, util.colour_black, (230, 430, 40, 25))
+        self.player_y = self.height - 70
+        self.bar_hit_y = self.height - 75
+        self.sprite_dirt = util.render_rect(self, locale.ID_DIRT, util.colour_brown, (0, (self.height - 35), self.width, 35))
+        self.sprite_grass = util.render_rect(self, locale.ID_GRASS, util.colour_green, (0, (self.height - 45), self.width, 10))
+        self.sprite_player = util.render_rect(self, locale.ID_PLAYER, util.colour_black, ((self.width / 2), self.player_y, 40, 25))
+        self.sprite_score = util.render_text(self, locale.GAME_SCORE.format(game.score), (70, 20), center=False)
 
     def clicked(self, game, sprite):
         pass
