@@ -10,6 +10,9 @@ clock = pygame.time.Clock()
 
 colour_black = pygame.Color('black')
 colour_white = pygame.Color('white')
+colour_green = (14, 201, 39)
+colour_brown = (99, 50, 4)
+colour_cyan = (11, 216, 239)
 
 
 def render_text(screen, text, position, size=30, center=True):
