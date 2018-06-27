@@ -2,7 +2,7 @@ import sys
 import pygame
 
 # Initialise all imported pygame modules
-from sprite import TextSprite
+from sprite import TextSprite, Sprite
 
 pygame.init()
 
@@ -27,10 +27,23 @@ def render_text(screen, text, position, size=30, center=True):
 
     font = pygame.font.Font('data/fonts/arial.ttf', size)
     render = font.render(text, True, colour_white, position)
-    render_rect = render.get_rect(center=(screen.width / 2, position[1]) if center else position)
+    rect = render.get_rect(center=(screen.width / 2, position[1]) if center else position)
 
-    screen.surface.blit(render, render_rect)
-    return apply_sprite(screen, TextSprite(render_rect, text))
+    screen.surface.blit(render, rect)
+    return apply_sprite(screen, TextSprite(rect, text))
+
+
+def render_rect(screen, identifier, colour, position):
+    rect = pygame.draw.rect(screen.surface, colour, position)
+    return apply_sprite(screen, Sprite(identifier, rect))
+
+
+def move_rect(screen, identifier, position, draw_colour, replace_colour):
+    for sprite in screen.sprites:
+        if sprite.identifier == identifier:
+            pygame.draw.rect(screen.surface, replace_colour, sprite.rect)
+            sprite.rect.center = position
+            pygame.draw.rect(screen.surface, draw_colour, sprite.rect)
 
 
 def apply_sprite(screen, sprite):
