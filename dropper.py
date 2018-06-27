@@ -16,6 +16,8 @@ class Game:
 
     # Attributes
     running = False
+    level = 0
+    wave = 1
 
     def __init__(self):
         self.active_screen = self.menu_screen
@@ -41,6 +43,8 @@ def handle_events(game):
         if game.active_screen.running:
             game.active_screen.show()
             pygame.display.update()
+
+        pygame.time.wait(20)
 
 
 if __name__ == '__main__':
