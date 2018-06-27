@@ -2,6 +2,7 @@ from abc import abstractmethod
 
 import pygame
 
+import locale
 import util
 from sprite import TextSprite
 
@@ -59,17 +60,17 @@ class MenuScreen(Screen):
 
     def run(self):
         self.surface.fill(util.colour_black)
-        util.render_text(self, "Dropper", (200, 100), 50)
-        util.render_text(self, "Play", (200, 200))
-        util.render_text(self, "Quit", (200, 250))
+        util.render_text(self, locale.MENU_TITLE, (200, 100), 50)
+        util.render_text(self, locale.MENU_PLAY, (200, 200))
+        util.render_text(self, locale.MENU_QUIT, (200, 250))
 
     def clicked(self, game, sprite):
         if type(sprite) == TextSprite:
-            if sprite.text == 'Play':
+            if sprite.text == locale.MENU_PLAY:
                 game.active_screen.hide()
                 game.active_screen = game.game_screen
                 game.active_screen.show()
-            elif sprite.text == 'Quit':
+            elif sprite.text == locale.MENU_QUIT:
                 util.exit_program()
 
 
