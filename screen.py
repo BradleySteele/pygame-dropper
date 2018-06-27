@@ -84,20 +84,28 @@ class GameScreen(Screen):
 
     def show(self, game):
         super().show(game)
-        util.move_rect(self, locale.ID_PLAYER, (pygame.mouse.get_pos()[0], 442), util.colour_black, util.colour_cyan)
+        util.move_rect_from_id(self, locale.ID_PLAYER, (pygame.mouse.get_pos()[0], 430), util.colour_black, util.colour_cyan)
 
         for sprite in self.sprites:
             if sprite.identifier == locale.ID_DROPPING_OBJECT:
                 if sprite.rect.colliderect(self.sprite_player.rect):
-                    print("GAME OVER")
-                elif sprite.rect.colliderect(self.sprite_dirt) or sprite.rect.colliderect(self.sprite_grass):
-                    print("HIT BOTTOM")
+                    game.active_screen.hide()
+                    # TODO game over screen
+                    game.active_screen = game.menu_screen
+                    game.active_screen.show(game)
+                elif sprite.rect.y == 425:
+                    self.sprites.remove(sprite)
+                    pygame.draw.rect(self.surface, util.colour_cyan, sprite.rect)
+                else:
+                    util.move_rect(self.surface, sprite, (sprite.rect.x, sprite.rect.y + 5), util.colour_red, util.colour_cyan)
 
     def run(self, game):
         self.surface.fill(util.colour_cyan)
         self.sprite_dirt = util.render_rect(self, locale.ID_DIRT, util.colour_brown, (0, 465, 500, 35))
         self.sprite_grass = util.render_rect(self, locale.ID_GRASS, util.colour_green, (0, 455, 500, 10))
         self.sprite_player = util.render_rect(self, locale.ID_PLAYER, util.colour_black, (230, 430, 40, 25))
+
+        util.render_rect(self, locale.ID_DROPPING_OBJECT, util.colour_red, (250, 0, 40, 25))
 
     def clicked(self, game, sprite):
         print("Clicked: " + sprite.identifier)
