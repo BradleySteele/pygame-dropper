@@ -1,4 +1,9 @@
 class Sprite:
+    """
+    The Sprite class is wrapper class for mapping an id with
+    the rect.
+    """
+
     identifier = None
     rect = None
 
@@ -8,6 +13,12 @@ class Sprite:
 
 
 class BarSprite(Sprite):
+    """
+    The BarSprite is a subclass of Sprite and provides two rects
+    for one bar. The gap in a bar is literal, rather than having
+    one rect and drawing a gap in it.
+    """
+
     part1 = None
     part2 = None
 
@@ -18,6 +29,11 @@ class BarSprite(Sprite):
 
 
 class TextSprite(Sprite):
+    """
+    The TextSprite is used as a button-like sprite and by default
+    uses the text as its identifier.
+    """
+
     text = None
 
     def __init__(self, rect, text):
