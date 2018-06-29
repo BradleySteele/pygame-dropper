@@ -53,13 +53,18 @@ def handle_events(game):
                 util.exit_program()
             elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 for sprite in game.active_screen.sprites:
+                    # When a mouse click event has been called, if the players mouse is
+                    # colliding with a sprite, call the clicked() event on the active
+                    # screen.
                     if sprite.rect.collidepoint(pygame.mouse.get_pos()):
                         game.active_screen.clicked(game, sprite)
 
+        # Tick show() while the screen is running and update the display.
         if game.active_screen.running:
             game.active_screen.show(game)
             pygame.display.update()
 
+        # Wait for next tick, depending on difficulty.
         pygame.time.wait(game.difficulty)
 
 
