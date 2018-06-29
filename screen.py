@@ -153,36 +153,50 @@ class GameScreen(Screen):
 
     def show(self, game):
         super().show(game)
+
+        # Update the player's position.
         util.move_rect_from_id(self, dropper_locale.ID_PLAYER, (pygame.mouse.get_pos()[0], self.player_y), util.colour_black, util.colour_cyan)
 
+        # Iterate through each bar.
         for sprite in self.sprites:
             if sprite.identifier == dropper_locale.ID_DROPPING_OBJECT:
+
+                # If either part of the bar collides with the player, display the end game screen.
                 if sprite.part1.colliderect(self.sprite_player.rect) or sprite.part2.colliderect(self.sprite_player.rect):
                     util.display_screen(game, game.end_game_screen)
                     return
+                # If the bar has reached the bottom, remove it.
                 elif sprite.rect.y >= self.bar_hit_y:
                     self.sprites.remove(sprite)
                     pygame.draw.rect(self.surface, util.colour_cyan, sprite.part1)
                     pygame.draw.rect(self.surface, util.colour_cyan, sprite.part2)
 
                     game.score += 1
+                # Otherwise, move the bar down by 2.
                 else:
                     util.move_bar(self.surface, sprite, 2, util.colour_red, util.colour_cyan)
 
+        # Increment game iteration.
         game.iteration += 1
 
         if game.iteration >= 100:
+            # Increment the difficulty every time the score reaches a multiple of 5,
+            # with a maximum difficulty of 3.
             if game.score != 0 and game.score % 5 == 0 and game.difficulty > 3:
                 game.difficulty -= 1
 
+            # Reset the iteration and calculate the gap size.
             game.iteration = 0
             gap = (100 - (game.score * 4))
 
+            # Check that the player can actually fit in the gap.
             if gap < 5:
                 gap = 5
 
+            # Render the bar.
             util.render_bar(self, dropper_locale.ID_DROPPING_OBJECT, util.colour_red, randint(0, (self.width - 100)), gap)
 
+        # Re-render the score in the top left.
         pygame.draw.rect(self.surface, util.colour_cyan, self.sprite_score.rect)
         self.sprite_score = util.render_text(self, dropper_locale.GAME_SCORE.format(game.score), (70, 20), center=False)
 
@@ -192,6 +206,8 @@ class GameScreen(Screen):
         game.difficulty = 10
 
         self.surface.fill(util.colour_cyan)
+
+        # Calculate sprite positions, allowing the game to be played at any height and width.
         self.player_y = self.height - 70
         self.bar_hit_y = self.height - 75
         self.sprite_dirt = util.render_rect(self, dropper_locale.ID_DIRT, util.colour_brown, (0, (self.height - 35), self.width, 35))
