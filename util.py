@@ -132,6 +132,20 @@ def apply_sprite(screen, sprite):
     return sprite
 
 
+def display_screen(game, screen):
+    """
+    Hides the active screen and sets and shows the provided
+    screen as the new for the game.
+
+    :param game:   the game to display the screen for.
+    :param screen: the screen to display.
+    """
+
+    game.active_screen.hide()
+    game.active_screen = screen
+    game.active_screen.show(game)
+
+
 def exit_program():
     """
     Quits pygame and exists the program.
