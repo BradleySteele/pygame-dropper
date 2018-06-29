@@ -12,6 +12,7 @@ class Game:
     # Screens
     active_screen = None
     menu_screen = screen.MenuScreen(setting_width, setting_height)
+    how_to_play_screen = screen.HowToPlayScreen(setting_width, setting_height)
     game_screen = screen.GameScreen(setting_width, setting_height)
     end_game_screen = screen.EndGameScreen(setting_width, setting_height)
 
