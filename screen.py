@@ -73,6 +73,10 @@ class Screen:
 
 
 class MenuScreen(Screen):
+    """
+    The menu screen provides access to all of the other screens and
+    the ability to exit the program completely.
+    """
 
     def __init__(self, width, height):
         super(MenuScreen, self).__init__(width, height, title='Dropper | Menu')
@@ -80,14 +84,15 @@ class MenuScreen(Screen):
     def run(self, game):
         util.render_text(self, locale.MENU_TITLE, (200, 100), 50)
         util.render_text(self, locale.MENU_PLAY, (200, 200))
-        util.render_text(self, locale.MENU_QUIT, (200, 250))
+        util.render_text(self, locale.MENU_HOW_TO_PLAY, (200, 250))
+        util.render_text(self, locale.MENU_QUIT, (200, 300))
 
     def clicked(self, game, sprite):
         if type(sprite) == TextSprite:
             if sprite.text == locale.MENU_PLAY:
-                game.active_screen.hide()
-                game.active_screen = game.game_screen
-                game.active_screen.show(game)
+                util.display_screen(game, game.game_screen)
+            elif sprite.text == locale.MENU_HOW_TO_PLAY:
+                util.display_screen(game, game.how_to_play_screen)
             elif sprite.text == locale.MENU_QUIT:
                 util.exit_program()
 
@@ -107,13 +112,31 @@ class EndGameScreen(Screen):
         util.render_text(self, locale.END_GAME_TITLE, (200, 100), 50)
         util.render_text(self, locale.END_GAME_SCORE.format(game.score), (200, 200), 25)
         util.render_text(self, locale.END_GAME_HIGH_SCORE.format(game.high_score), (200, 230), 25)
-        util.render_text(self, locale.END_GAME_RETURN_TO_MENU.format(game.high_score), (200, 300))
+        util.render_text(self, locale.END_GAME_PLAY_AGAIN, (200, 300))
+        util.render_text(self, locale.END_GAME_RETURN_TO_MENU, (200, 350))
 
     def clicked(self, game, sprite):
-        if sprite.text == locale.END_GAME_RETURN_TO_MENU:
-            game.active_screen.hide()
-            game.active_screen = game.menu_screen
-            game.active_screen.show(game)
+        if sprite.identifier == locale.END_GAME_PLAY_AGAIN:
+            util.display_screen(game, game.game_screen)
+        elif sprite.identifier == locale.END_GAME_RETURN_TO_MENU:
+            util.display_screen(game, game.menu_screen)
+
+
+class HowToPlayScreen(Screen):
+
+    def __init__(self, width, height):
+        super(HowToPlayScreen, self).__init__(width, height, title='Dropper | How to Play')
+
+    def run(self, game):
+        util.render_text(self, locale.HOW_TO_PLAY_TITLE, (200, 100), 50)
+        util.render_text(self, locale.HOW_TO_PLAY_LINE_1, (200, 200), 25)
+        util.render_text(self, locale.HOW_TO_PLAY_LINE_2, (200, 225), 25)
+        util.render_text(self, locale.HOW_TO_PLAY_LINE_3, (200, 250), 25)
+        util.render_text(self, locale.HOW_TO_PLAY_GO_BACK, (200, 300), 25)
+
+    def clicked(self, game, sprite):
+        if sprite.identifier == locale.HOW_TO_PLAY_GO_BACK:
+            util.display_screen(game, game.menu_screen)
 
 
 class GameScreen(Screen):
@@ -135,9 +158,7 @@ class GameScreen(Screen):
         for sprite in self.sprites:
             if sprite.identifier == locale.ID_DROPPING_OBJECT:
                 if sprite.part1.colliderect(self.sprite_player.rect) or sprite.part2.colliderect(self.sprite_player.rect):
-                    game.active_screen.hide()
-                    game.active_screen = game.end_game_screen
-                    game.active_screen.show(game)
+                    util.display_screen(game, game.end_game_screen)
                     return
                 elif sprite.rect.y >= self.bar_hit_y:
                     self.sprites.remove(sprite)
